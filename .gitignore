@@ -1,0 +1,42 @@
+# Build outputs
+bin/
+obj/
+out/
+
+# .NET user secrets and local config
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json
+*.user
+*.suo
+.vs/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes (local dev)
+postgres_data/
+
+# Rider / JetBrains
+.idea/
+
+# VS Code (keep workspace settings if desired)
+# .vscode/
+
+# EF Migrations backup
+*.bak

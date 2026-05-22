@@ -1,0 +1,57 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0ECE1328-789F-4146-A477-25E21881BCE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletWise.Domain", "src\WalletWise.Domain\WalletWise.Domain.csproj", "{D5E29249-BDE7-42DD-AE2A-FC8FD9794ED0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletWise.Application", "src\WalletWise.Application\WalletWise.Application.csproj", "{3A1BD14A-DE24-4619-85BA-1A04673B9161}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletWise.Infrastructure", "src\WalletWise.Infrastructure\WalletWise.Infrastructure.csproj", "{BB91A22E-52BB-4744-96A4-38FAFE813D2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletWise.Web", "src\WalletWise.Web\WalletWise.Web.csproj", "{CA715309-EAFC-4CEB-8322-17C0D2687357}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{8499B0BF-6BE7-4AA4-8BE5-598025594007}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletWise.UnitTests", "tests\WalletWise.UnitTests\WalletWise.UnitTests.csproj", "{63004517-4256-4AE9-805F-64508172A4BB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5E29249-BDE7-42DD-AE2A-FC8FD9794ED0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5E29249-BDE7-42DD-AE2A-FC8FD9794ED0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5E29249-BDE7-42DD-AE2A-FC8FD9794ED0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5E29249-BDE7-42DD-AE2A-FC8FD9794ED0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A1BD14A-DE24-4619-85BA-1A04673B9161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A1BD14A-DE24-4619-85BA-1A04673B9161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A1BD14A-DE24-4619-85BA-1A04673B9161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A1BD14A-DE24-4619-85BA-1A04673B9161}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB91A22E-52BB-4744-96A4-38FAFE813D2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB91A22E-52BB-4744-96A4-38FAFE813D2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB91A22E-52BB-4744-96A4-38FAFE813D2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB91A22E-52BB-4744-96A4-38FAFE813D2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA715309-EAFC-4CEB-8322-17C0D2687357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA715309-EAFC-4CEB-8322-17C0D2687357}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA715309-EAFC-4CEB-8322-17C0D2687357}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA715309-EAFC-4CEB-8322-17C0D2687357}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63004517-4256-4AE9-805F-64508172A4BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63004517-4256-4AE9-805F-64508172A4BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63004517-4256-4AE9-805F-64508172A4BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63004517-4256-4AE9-805F-64508172A4BB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D5E29249-BDE7-42DD-AE2A-FC8FD9794ED0} = {0ECE1328-789F-4146-A477-25E21881BCE1}
+		{3A1BD14A-DE24-4619-85BA-1A04673B9161} = {0ECE1328-789F-4146-A477-25E21881BCE1}
+		{BB91A22E-52BB-4744-96A4-38FAFE813D2B} = {0ECE1328-789F-4146-A477-25E21881BCE1}
+		{CA715309-EAFC-4CEB-8322-17C0D2687357} = {0ECE1328-789F-4146-A477-25E21881BCE1}
+		{63004517-4256-4AE9-805F-64508172A4BB} = {8499B0BF-6BE7-4AA4-8BE5-598025594007}
+	EndGlobalSection
+EndGlobal

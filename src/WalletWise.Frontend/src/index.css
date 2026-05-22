@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Light mode tokens (space-separated RGB for Tailwind opacity support) ── */
+:root {
+  --color-bg:                248 249 255;
+  --color-surface:           248 249 255;
+  --color-sc-lowest:         255 255 255;
+  --color-sc-low:            239 244 255;
+  --color-sc:                229 238 255;
+  --color-sc-high:           220 233 255;
+  --color-sc-highest:        211 228 254;
+  --color-on-surface:        11 28 48;
+  --color-on-surface-variant:68 70 81;
+  --color-outline:           117 118 130;
+  --color-outline-variant:   197 197 211;
+  --color-primary:           0 35 111;
+  --color-on-primary:        255 255 255;
+  --color-secondary:         0 106 97;
+  --color-on-secondary:      255 255 255;
+  --color-error:             186 26 26;
+  --color-on-error:          255 255 255;
+  --color-accent:            243 148 97;
+}
+
+/* ── Dark mode tokens ──────────────────────────────────────────────── */
+html.dark {
+  --color-bg:                11 19 38;
+  --color-surface:           11 19 38;
+  --color-sc-lowest:         6 14 32;
+  --color-sc-low:            19 27 46;
+  --color-sc:                23 31 51;
+  --color-sc-high:           34 42 61;
+  --color-sc-highest:        45 52 73;
+  --color-on-surface:        218 226 253;
+  --color-on-surface-variant:189 200 209;
+  --color-outline:           135 146 154;
+  --color-outline-variant:   62 72 79;
+  --color-primary:           142 213 255;
+  --color-on-primary:        0 53 74;
+  --color-secondary:         185 200 222;
+  --color-on-secondary:      35 49 67;
+  --color-error:             255 180 171;
+  --color-on-error:          105 0 5;
+  --color-accent:            255 182 145;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────── */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: rgb(var(--color-bg));
+  color: rgb(var(--color-on-surface));
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+}
+
+.icon-filled {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* ── Card hover lift ───────────────────────────────────────────────── */
+.card-hover {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.15);
+}
+html.dark .card-hover:hover {
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgb(var(--color-outline-variant)); border-radius: 3px; }

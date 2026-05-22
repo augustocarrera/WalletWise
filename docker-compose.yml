@@ -1,0 +1,58 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: walletwise_db
+    environment:
+      POSTGRES_DB: walletwise
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - walletwise_net
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: walletwise_api
+    ports:
+      - "5191:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=walletwise;Username=postgres;Password=postgres
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - walletwise_net
+
+  frontend:
+    image: node:20-alpine
+    container_name: walletwise_frontend
+    working_dir: /app
+    volumes:
+      - ./src/WalletWise.Frontend:/app
+      - frontend_modules:/app/node_modules
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    networks:
+      - walletwise_net
+
+volumes:
+  postgres_data:
+  frontend_modules:
+
+networks:
+  walletwise_net:
+    driver: bridge
