@@ -20,6 +20,7 @@ public static class DependencyInjection
         services.AddScoped<ITransacaoRepository, TransacaoRepository>();
         services.AddScoped<IMetaFinanceiraRepository, MetaFinanceiraRepository>();
         services.AddScoped<IRelatorioRepository, RelatorioRepository>();
+        services.AddScoped<IMensalidadeRepository, MensalidadeRepository>();
 
         services.AddHttpClient<ICotacaoService, CotacaoService>(client =>
         {

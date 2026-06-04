@@ -78,7 +78,7 @@ function labelCls() {
   return 'block text-xs font-bold text-outline uppercase tracking-wider mb-1.5'
 }
 
-function ExchangePanel({ analise, moeda, loading, chartId = 'panel' }) {
+function ExchangePanel({ analise, moeda, loading, onRetry, chartId = 'panel' }) {
   const rec    = analise ? REC[analise.recomendacao] : null
   const pct    = analise ? ((analise.cotacaoAtual - analise.mediaUltimos30Dias) / analise.mediaUltimos30Dias * 100) : null
   const trend  = calcTrend(analise?.historico)
@@ -97,6 +97,15 @@ function ExchangePanel({ analise, moeda, loading, chartId = 'panel' }) {
         <div className="flex flex-col items-center justify-center h-full py-4 gap-2 text-center">
           <span className="material-symbols-outlined text-3xl text-outline">wifi_off</span>
           <p className="text-xs text-outline">Sem dados de câmbio disponíveis</p>
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              className="mt-1 flex items-center gap-1 text-xs text-primary font-bold hover:underline"
+            >
+              <span className="material-symbols-outlined text-[14px]">refresh</span>
+              Tentar novamente
+            </button>
+          )}
         </div>
       ) : (
         <>
@@ -157,6 +166,20 @@ export default function Goals() {
 
   const [paisSearch, setPaisSearch] = useState('')
   const [valorMode, setValorMode]   = useState('local') // 'local' | 'brl'
+
+  useEffect(() => {
+    if (!paisSearch.trim()) return
+    const filtered = PAISES.filter(p =>
+      p.pais.toLowerCase().includes(paisSearch.toLowerCase()) ||
+      p.moeda.toLowerCase().includes(paisSearch.toLowerCase())
+    )
+    if (filtered.length === 1) {
+      const p = filtered[0]
+      setForm(f => ({ ...f, pais: p.pais, moeda: p.moeda, bandeira: p.bandeira }))
+      setValorMode('local')
+      setPaisSearch('')
+    }
+  }, [paisSearch])
 
   // Edit
   const [editId, setEditId]       = useState(null)
@@ -264,6 +287,20 @@ export default function Goals() {
       await api.adicionarAporte(id, v)
       setAporteId(null); setAporteVal(''); load()
     } catch {}
+  }
+
+  async function retryAnalise(moeda) {
+    try {
+      const analise = await api.analiseCambio(moeda)
+      setAnalises(prev => ({ ...prev, [moeda]: analise }))
+    } catch {}
+  }
+
+  function retryFormAnalise() {
+    setFormAnaliseLoading(true)
+    api.analiseCambio(form.moeda)
+      .then(setFormAnalise).catch(() => setFormAnalise(null))
+      .finally(() => setFormAnaliseLoading(false))
   }
 
   function prevMonth() { setMonth(m => m.month === 0 ? { year: m.year - 1, month: 11 } : { ...m, month: m.month - 1 }) }
@@ -422,7 +459,7 @@ export default function Goals() {
               </form>
 
               {form.moeda !== 'BRL' ? (
-                <ExchangePanel analise={formAnalise} moeda={form.moeda} loading={formAnaliseLoading} chartId="form-preview" />
+                <ExchangePanel analise={formAnalise} moeda={form.moeda} loading={formAnaliseLoading} onRetry={retryFormAnalise} chartId="form-preview" />
               ) : (
                 <div className="flex flex-col items-center justify-center bg-surface-container-low/40 rounded-xl border border-dashed border-outline-variant p-8 text-center gap-2">
                   <span className="text-4xl">🇧🇷</span>
@@ -540,11 +577,19 @@ export default function Goals() {
                       <div className="flex items-end justify-between">
                         <div>
                           <p className="text-xs text-outline uppercase font-semibold tracking-wider">Acumulado</p>
-                          <p className="text-xl font-bold text-on-surface tabular-nums">{meta.moeda} {fmtNum(meta.valorAcumulado)}</p>
+                          <p className="text-xl font-bold text-on-surface tabular-nums">
+                            {meta.moeda === 'BRL' || !analise
+                              ? `${meta.moeda} ${fmtNum(meta.valorAcumulado)}`
+                              : fmtBRL(meta.valorAcumulado * analise.cotacaoAtual)}
+                          </p>
                         </div>
                         <div className="text-right">
                           <p className="text-xs text-outline uppercase font-semibold tracking-wider">Meta</p>
-                          <p className="text-xl font-bold text-primary tabular-nums">{meta.moeda} {fmtNum(meta.valorAlvo)}</p>
+                          <p className="text-xl font-bold text-primary tabular-nums">
+                            {meta.moeda === 'BRL' || !analise
+                              ? `${meta.moeda} ${fmtNum(meta.valorAlvo)}`
+                              : fmtBRL(meta.valorAlvo * analise.cotacaoAtual)}
+                          </p>
                         </div>
                       </div>
 
@@ -607,7 +652,7 @@ export default function Goals() {
 
                     {/* Right: chart panel */}
                     {hasFx && (
-                      <ExchangePanel analise={analise} moeda={meta.moeda} loading={false} chartId={meta.id} />
+                      <ExchangePanel analise={analise} moeda={meta.moeda} loading={false} onRetry={() => retryAnalise(meta.moeda)} chartId={meta.id} />
                     )}
                   </div>
                 </div>

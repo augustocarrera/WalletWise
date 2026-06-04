@@ -4,8 +4,8 @@ const h = { 'Content-Type': 'application/json' }
 
 async function req(url, opts = {}) {
   const res = await fetch(`${BASE}${url}`, opts)
-  if (res.status === 204) return null
-  const data = await res.json()
+  const text = await res.text()
+  const data = text ? JSON.parse(text) : null
   if (!res.ok) {
     const firstValidation = data?.errors ? Object.values(data.errors).flat()[0] : null
     throw new Error(data?.mensagem ?? data?.title ?? firstValidation ?? `Erro ${res.status}`)
@@ -32,4 +32,11 @@ export const api = {
 
   // Análise cambial
   analiseCambio: (moeda)       => req(`/api/analise-cambio/${moeda}`),
+
+  // Mensalidades
+  listarMensalidades:   ()         => req('/api/mensalidades'),
+  criarMensalidade:     (d)        => req('/api/mensalidades', { method: 'POST', headers: h, body: JSON.stringify(d) }),
+  atualizarMensalidade: (id, d)    => req(`/api/mensalidades/${id}`, { method: 'PUT', headers: h, body: JSON.stringify(d) }),
+  excluirMensalidade:   (id)       => req(`/api/mensalidades/${id}`, { method: 'DELETE' }),
+  alternarMensalidade:  (id)       => req(`/api/mensalidades/${id}/alternar`, { method: 'PATCH' }),
 }

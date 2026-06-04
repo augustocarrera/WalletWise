@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom'
 
 const links = [
-  { to: '/',           icon: 'dashboard',    label: 'Dashboard' },
-  { to: '/transacoes', icon: 'receipt_long', label: 'Transações' },
-  { to: '/metas',      icon: 'track_changes', label: 'Metas' },
+  { to: '/',             icon: 'dashboard',    label: 'Dashboard' },
+  { to: '/transacoes',   icon: 'receipt_long', label: 'Transações' },
+  { to: '/metas',        icon: 'track_changes', label: 'Metas' },
+  { to: '/assinaturas',  icon: 'subscriptions', label: 'Assinaturas' },
 ]
 
 export default function Sidebar() {

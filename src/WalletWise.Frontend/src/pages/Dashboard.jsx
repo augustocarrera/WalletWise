@@ -44,6 +44,7 @@ export default function Dashboard() {
   const [transacoes, setTransacoes] = useState([])
   const [metas, setMetas] = useState([])
   const [analises, setAnalises] = useState({})
+  const [loadingAnalises, setLoadingAnalises] = useState(true)
 
   const loadResumo = useCallback(async () => {
     try {
@@ -66,6 +67,7 @@ export default function Dashboard() {
       ])]
 
       if (moedas.length > 0) {
+        setLoadingAnalises(true)
         const settled = await Promise.allSettled(moedas.map(m => api.analiseCambio(m)))
         const obj = {}
         moedas.forEach((m, i) => {
@@ -73,11 +75,20 @@ export default function Dashboard() {
         })
         setAnalises(obj)
       }
-    } catch {}
+      setLoadingAnalises(false)
+    } catch { setLoadingAnalises(false) }
   }, [])
 
   useEffect(() => { loadAll() }, [loadAll])
   useEffect(() => { loadResumo() }, [loadResumo])
+
+  async function retryGoalAnalise(moeda) {
+    setLoadingAnalises(true)
+    try {
+      const analise = await api.analiseCambio(moeda)
+      setAnalises(prev => ({ ...prev, [moeda]: analise }))
+    } catch {} finally { setLoadingAnalises(false) }
+  }
 
   function prevMonth() {
     setMonth(m => m.month === 0 ? { year: m.year - 1, month: 11 } : { ...m, month: m.month - 1 })
@@ -193,7 +204,12 @@ export default function Dashboard() {
 
               {/* Right: exchange panel */}
               {primeiraAtiva.moeda !== 'BRL' && (
-                <GoalExchangePanel analise={metaAnalise} moeda={primeiraAtiva.moeda} />
+                <GoalExchangePanel
+                  analise={metaAnalise}
+                  moeda={primeiraAtiva.moeda}
+                  loading={loadingAnalises}
+                  onRetry={() => retryGoalAnalise(primeiraAtiva.moeda)}
+                />
               )}
             </div>
           ) : (
@@ -257,7 +273,7 @@ export default function Dashboard() {
   )
 }
 
-function GoalExchangePanel({ analise, moeda }) {
+function GoalExchangePanel({ analise, moeda, loading = false, onRetry }) {
   const rec    = analise ? REC_STYLE[analise.recomendacao] : null
   const pct    = analise ? ((analise.cotacaoAtual - analise.mediaUltimos30Dias) / analise.mediaUltimos30Dias * 100) : null
   const trend  = calcTrend(analise?.historico)
@@ -266,7 +282,7 @@ function GoalExchangePanel({ analise, moeda }) {
 
   return (
     <div className="bg-surface-container-low/60 p-6 rounded-xl border border-outline-variant/70">
-      {!analise ? (
+      {loading && !analise ? (
         <div className="space-y-4 animate-pulse">
           <div className="flex justify-between">
             <div className="space-y-2 flex-1 mr-4">
@@ -277,6 +293,20 @@ function GoalExchangePanel({ analise, moeda }) {
           </div>
           <div className="h-[100px] bg-surface-container-high rounded" />
           <div className="h-3 w-full bg-surface-container-high rounded" />
+        </div>
+      ) : !analise ? (
+        <div className="flex flex-col items-center justify-center py-8 gap-2 text-center">
+          <span className="material-symbols-outlined text-3xl text-outline">wifi_off</span>
+          <p className="text-xs text-outline">Sem dados de câmbio disponíveis</p>
+          {onRetry && (
+            <button
+              onClick={onRetry}
+              className="mt-1 flex items-center gap-1 text-xs text-primary font-bold hover:underline"
+            >
+              <span className="material-symbols-outlined text-[14px]">refresh</span>
+              Tentar novamente
+            </button>
+          )}
         </div>
       ) : (
         <>

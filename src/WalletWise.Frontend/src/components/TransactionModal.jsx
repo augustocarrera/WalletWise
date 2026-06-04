@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useApp } from '../context/AppContext'
 import { api } from '../services/api'
-
-const MOEDAS = ['BRL', 'USD', 'EUR', 'JPY', 'GBP', 'ARS']
+import { MOEDAS } from '../constants/moedas'
 const EMPTY = {
   descricao: '',
   valor: '',
@@ -117,7 +116,7 @@ export default function TransactionModal() {
                 value={form.moeda}
                 onChange={e => set('moeda', e.target.value)}
               >
-                {MOEDAS.map(m => <option key={m} value={m}>{m}</option>)}
+                {MOEDAS.map(m => <option key={m.code} value={m.code}>{m.label}</option>)}
               </select>
             </div>
           </div>
